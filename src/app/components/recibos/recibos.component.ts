@@ -195,7 +195,7 @@ export class RecibosComponent implements OnInit {
       this.mensajeFaltaDato('moneda') 
       return false
      }
-     if(str.monto== undefined || str.monto == null || isNaN(+str.monto)){
+     if(str.monto== undefined || str.monto == null || isNaN(+str.monto) || str.monto <= 0){
       this.mensajeFaltaDato('monto') 
       return false
      }
@@ -210,8 +210,8 @@ export class RecibosComponent implements OnInit {
   mensajeFaltaDato(dato:string){
     Swal.fire({
       icon: 'error',
-      title: `Falta un dato`,
-      text: `Falta el dato del ${dato}`,
+      title: `Faltan datos`,
+      text: `Falta el dato "${dato}"`,
     })
   }
 
