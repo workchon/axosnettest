@@ -1,0 +1,152 @@
+<nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand" href="#">
+        <img src="https://e1-axn-axosnet.s3.us-east-1.amazonaws.com/prd/acs/logoacs.png" class="img-fluid" alt="">
+    </a>
+    <form class="form-inline">
+        <button class="btn btn-outline-success my-2 my-sm-0 left-px" type="submit" (click)="cerrarSesion()">Cerrar sesion</button>
+    </form>
+</nav>
+
+<div class="container h-100 top-px">
+    <div class="row h-100 justify-content-center align-items-center">
+        <div class="background">
+            <div class="card">
+                <div><button type="button" style="float: right;" class="btn btn-primary left-px" (click)="openAgregar(content)">Agregar recibo <i class="fa fa-solid fa-plus"></i></button></div>
+                <br>
+                <div class="container">
+                    <table class="table fixed_header">
+                        <thead class="thead-dark ">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Proveedor</th>
+                                <th scope="col">Moneda</th>
+                                <th scope="col">Monto</th>
+                                <th scope="col">Fecha</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of recibos">
+                                <th scope="row">{{row.id}}</th>
+                                <td>{{row.proveedor}}</td>
+                                <td>{{row.moneda}}</td>
+                                <td>{{row.monto}}</td>
+                                <td>{{row.fecha | date: 'dd/MM/yyyy HH:ss'}}</td>
+                                <td> <button type="button" class="btn btn-info Left-15-px" (click)="openVista(vista,row)"><i class="fa fa-eye fa-pencil"></i></button> <button type="button" class="btn btn-warning" (click)="openModificar(modificacion,row)"><i class="fa fa-solid fa-pencil"></i></button>
+                                    <button type="button" class="btn btn-danger right-15-px" (click)="deleteRecibo(row)"><i class="fa fa-solid fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--Agregar Recibo-->
+<ng-template #content let-modal let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">Agregar Recibo</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <label for="exampleInputEmail1">Proveedor</label>
+            <input [(ngModel)]="obj_Agregar.proveedor" #ProveedorAgregar type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlInput1">Moneda</label>
+            <select [(ngModel)]="obj_Agregar.moneda" class="form-select" aria-label="Default select example">
+                <option *ngFor="let item of lst_Moneda" [ngValue]="item">{{item}}</option>
+              </select>
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlInput1">Monto</label>
+            <input [(ngModel)]="obj_Agregar.monto" type="text" class="form-control" id="exampleFormControlInput1">
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlInput1">Fecha</label>
+            <input [(ngModel)]="obj_Agregar.fecha" class="form-control" type="datetime-local">
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlTextarea1">Comentario</label>
+            <textarea [(ngModel)]="obj_Agregar.comentario" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="postRecibo(content,obj_Agregar)">Agregar</button>
+        <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Cerrar</button>
+    </div>
+</ng-template>
+
+<!--Modificar Recibo-->
+<ng-template #modificacion let-modal let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">Modificar Recibo</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <label for="exampleInputEmail1">Proveedor</label>
+            <input [(ngModel)]="obj_Modificacion.proveedor" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlInput1">Moneda</label>
+            <select [(ngModel)]="obj_Modificacion.moneda" class="form-select" aria-label="Default select example">
+                <option *ngFor="let item of lst_Moneda" [ngValue]="item">{{item}}</option>
+              </select>
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlInput1">Monto</label>
+            <input [(ngModel)]="obj_Modificacion.monto" type="text" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlInput1">Fecha</label>
+            <input [(ngModel)]="obj_Modificacion.fecha" class="form-control" type="datetime-local">
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlTextarea1">Comentario</label>
+            <textarea [(ngModel)]="obj_Modificacion.comentario" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="putRecibo(content)">Modificar</button>
+        <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Cerrar</button>
+    </div>
+</ng-template>
+
+<!--Vista Recibo-->
+<ng-template #vista let-modal let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">Vista Recibo</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <label for="exampleInputEmail1">Proveedor</label>
+            <input [(ngModel)]="obj_Vista.proveedor" type="text" class="form-control" id="exampleInputEmail1" [disabled]="true">
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlInput1">Moneda</label>
+            <select [(ngModel)]="obj_Vista.moneda" class="form-select" aria-label="Default select example" [disabled]="true">
+                <option *ngFor="let item of lst_Moneda" [ngValue]="item">{{item}}</option>
+              </select>
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlInput1">Monto</label>
+            <input [(ngModel)]="obj_Vista.monto" type="text" class="form-control" id="exampleFormControlInput1" [disabled]="true">
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlInput1">Fecha</label>
+            <input [(ngModel)]="obj_Vista.fecha" class="form-control" type="datetime-local" [disabled]="true">
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlTextarea1">Comentario</label>
+            <textarea [(ngModel)]="obj_Vista.comentario" class="form-control" id="exampleFormControlTextarea1" rows="3" [disabled]="true"></textarea>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Cerrar</button>
+    </div>
+</ng-template>

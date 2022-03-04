@@ -1,0 +1,53 @@
+<div class="full-height fondo d-flex flex-column min-vh-100 justify-content-center align-items-center">
+    <div class="container h-100 ">
+        <div class="row h-100 justify-content-center align-items-center">
+            <div class="background">
+                <div class="card">
+                    <div style="text-align: center;">
+                        <img src="https://e1-axn-axosnet.s3.us-east-1.amazonaws.com/prd/acs/logoacs.png" class="img-fluid">
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <input #email type="email" class="form-control input2" aria-describedby="emailHelp" placeholder="Enter email">
+                        </div>
+                        <div class="form-group">
+                            <input #password type="password" class="form-control input2" placeholder="Password">
+                        </div>
+                        <button type="submit" class="btn btn-primary logIn" (click)="LoginIn(password.value,email.value)">Entrar</button>
+                        <p class="top-px">
+                            <span id="LabelForgot" (click)="openAgregar(agregar)">Registrar nuevo usuario</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--Agregar usuario-->
+<ng-template #agregar let-modal let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">Agregar Usuario</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <label for="exampleInputEmail1">Nombre</label>
+            <input [(ngModel)]="obj_Agregar.name" type="text" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Email</label>
+            <input [(ngModel)]="obj_Agregar.email" type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter email">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Password</label>
+            <input [(ngModel)]="obj_Agregar.password" type="password" class="form-control" placeholder="Password">
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="agregarUsuario(agregar,obj_Agregar)">Agregar</button>
+        <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Cerrar</button>
+    </div>
+</ng-template>
